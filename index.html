@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZINOVA GROUP — THINK. BUILD. CONQUER.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0A0A0A;
+    --ink-soft:#161310;
+    --ink-line:#2E2620;
+    --paper:#FFF7EA;
+    --paper-line:#EAD9BC;
+    --text:#F5F1EA;
+    --text-muted:#A69C8D;
+    --text-dark:#1C1409;
+    --text-dark-muted:#6B5A44;
+    --tech:#FF6A1A;
+    --studio:#FFC933;
+    --founders:#FF9500;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--ink);
+    color:var(--text);
+    font-family:'IBM Plex Sans',sans-serif;
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important;}
+  }
+  a{color:inherit; text-decoration:none;}
+  .display{font-family:'Unbounded',sans-serif;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 32px;}
+  section{position:relative;}
+
+  /* subtle blueprint grid texture */
+  .grid-bg{
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(var(--ink-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--ink-line) 1px, transparent 1px);
+    background-size:56px 56px;
+    opacity:0.35;
+    mask-image:radial-gradient(ellipse 80% 60% at 50% 20%, black 40%, transparent 90%);
+    pointer-events:none;
+  }
+
+  /* focus visibility */
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--tech);
+    outline-offset:3px;
+  }
+
+  /* ---------- NAV ---------- */
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    padding:20px 0;
+    transition:background .3s ease, padding .3s ease, border-color .3s ease, box-shadow .3s ease;
+    border-bottom:1px solid transparent;
+  }
+  header.scrolled{
+    background:rgba(10,10,10,0.6);
+    backdrop-filter:blur(16px) saturate(160%);
+    -webkit-backdrop-filter:blur(16px) saturate(160%);
+    padding:14px 0;
+    border-bottom:1px solid rgba(255,255,255,0.08);
+    box-shadow:0 8px 32px rgba(0,0,0,0.35);
+  }
+  nav{display:flex; align-items:center; justify-content:space-between;}
+  .logo{
+    font-family:'Unbounded',sans-serif;
+    font-weight:700;
+    font-size:16px;
+    letter-spacing:0.5px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .logo .bolt{color:var(--tech); font-size:18px;}
+  .nav-links{display:flex; gap:36px; align-items:center;}
+  .nav-links a{
+    font-size:14px; color:var(--text-muted); font-weight:500;
+    position:relative; padding:4px 0;
+    transition:color .2s ease;
+  }
+  .nav-links a:hover{color:var(--text);}
+  .nav-links a::after{
+    content:''; position:absolute; bottom:0; left:0; width:0; height:1px;
+    background:var(--tech); transition:width .25s ease;
+  }
+  .nav-links a:hover::after{width:100%;}
+  .btn-touch{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    color:var(--ink) !important;
+    background:linear-gradient(180deg, #FF8A3D, var(--tech));
+    padding:9px 18px;
+    border-radius:6px;
+    font-weight:500;
+    letter-spacing:0.3px;
+    box-shadow:0 3px 0 #B84C0E, 0 6px 16px rgba(255,106,26,0.35);
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn-touch:hover{transform:translateY(-2px); box-shadow:0 5px 0 #B84C0E, 0 10px 24px rgba(255,106,26,0.4);}
+  .btn-touch:active{transform:translateY(1px); box-shadow:0 2px 0 #B84C0E, 0 4px 10px rgba(255,106,26,0.3);}
+  .nav-toggle{display:none;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    min-height:100vh;
+    display:flex; flex-direction:column; justify-content:center;
+    padding-top:100px; padding-bottom:60px;
+  }
+  .hero-glow{
+    position:absolute; top:-10%; left:50%; transform:translateX(-50%);
+    width:900px; height:600px; max-width:140vw;
+    background:radial-gradient(ellipse at center, rgba(255,106,26,0.16) 0%, rgba(255,201,51,0.06) 45%, transparent 75%);
+    pointer-events:none; z-index:0;
+  }
+  .hero .wrap{position:relative; z-index:1;}
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px; letter-spacing:0.5px;
+    color:var(--tech);
+    border:1px solid rgba(255,106,26,0.35);
+    background:rgba(255,106,26,0.08);
+    padding:7px 14px;
+    border-radius:2px;
+    margin-bottom:28px;
+  }
+  .tagline{
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;
+    letter-spacing:4px;
+    color:var(--text-muted);
+    margin-bottom:20px;
+  }
+  .hero h1{
+    font-size:clamp(48px, 8.5vw, 108px);
+    line-height:0.95;
+    font-weight:900;
+    letter-spacing:-1px;
+    max-width:900px;
+    margin-bottom:28px;
+  }
+  .hero h1 .accent{color:var(--tech);}
+  .hero p.lead{
+    font-size:18px;
+    color:var(--text-muted);
+    max-width:560px;
+    margin-bottom:44px;
+  }
+  .hero-ctas{display:flex; gap:16px; flex-wrap:wrap; margin-bottom:80px;}
+  .btn-primary, .btn-secondary{
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;
+    padding:15px 28px;
+    border-radius:8px;
+    font-weight:500;
+    letter-spacing:0.3px;
+    display:inline-flex; align-items:center; gap:8px;
+    transition:transform .18s ease, box-shadow .18s ease;
+  }
+  .btn-primary{
+    background:linear-gradient(180deg, #FF8A3D, var(--tech));
+    color:var(--ink);
+    box-shadow:0 4px 0 #B84C0E, 0 10px 24px rgba(255,106,26,0.3);
+  }
+  .btn-primary:hover{transform:translateY(-3px); box-shadow:0 7px 0 #B84C0E, 0 16px 32px rgba(255,106,26,0.4);}
+  .btn-primary:active{transform:translateY(1px); box-shadow:0 2px 0 #B84C0E, 0 6px 14px rgba(255,106,26,0.3);}
+  .btn-secondary{
+    border:1px solid var(--ink-line);
+    color:var(--text);
+    background:rgba(255,255,255,0.03);
+    backdrop-filter:blur(6px);
+  }
+  .btn-secondary:hover{border-color:var(--tech); color:var(--tech); transform:translateY(-3px); box-shadow:0 10px 24px rgba(0,0,0,0.4);}
+
+  /* voltage pulse signature line */
+  .pulse-wrap{width:100%; max-width:720px;}
+  .pulse-svg{width:100%; height:60px; display:block;}
+  .pulse-path{
+    fill:none;
+    stroke:var(--tech);
+    stroke-width:2;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    filter:drop-shadow(0 0 6px rgba(255,106,26,0.55));
+    stroke-dasharray:900;
+    stroke-dashoffset:900;
+    animation:draw-pulse 2.6s ease-out forwards .3s;
+  }
+  @keyframes draw-pulse{ to{ stroke-dashoffset:0; } }
+  .scroll-cue{
+    margin-top:16px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px; letter-spacing:2px;
+    color:var(--text-muted);
+    display:flex; align-items:center; gap:10px;
+  }
+  .scroll-cue .line{width:24px; height:1px; background:var(--text-muted); animation:pulse-op 2s ease-in-out infinite;}
+  @keyframes pulse-op{ 0%,100%{opacity:.3;} 50%{opacity:1;} }
+
+  /* ---------- SECTION HEADERS ---------- */
+  .section-head{max-width:640px; margin-bottom:64px;}
+  .section-head .eyebrow-line{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px; letter-spacing:2px; color:var(--tech);
+    margin-bottom:14px; display:block;
+  }
+  .section-head h2{
+    font-size:clamp(30px,4vw,46px);
+    font-weight:700;
+    letter-spacing:-0.5px;
+    margin-bottom:16px;
+    line-height:1.1;
+  }
+  .section-head p{color:var(--text-muted); font-size:16px; max-width:520px;}
+  .light .section-head p{color:var(--text-dark-muted);}
+  .light .section-head h2{color:var(--text-dark);}
+
+  /* ---------- ABOUT (light panel) ---------- */
+  .about{background:var(--paper); color:var(--text-dark); padding:120px 0;}
+  .about-grid{display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:start;}
+  .about-copy p{margin-bottom:20px; font-size:17px; color:var(--text-dark-muted); max-width:480px;}
+  .about-meta{
+    border:1px solid var(--paper-line);
+    background:rgba(255,255,255,0.55);
+    backdrop-filter:blur(8px);
+    padding:28px;
+    border-radius:14px;
+    box-shadow:0 1px 0 rgba(255,255,255,0.6) inset, 0 24px 48px -28px rgba(28,20,9,0.35);
+  }
+  .about-meta .mono{font-size:12px; letter-spacing:1px; color:var(--text-dark-muted); display:block; margin-bottom:8px;}
+  .about-meta .est-date{font-family:'Unbounded',sans-serif; font-size:22px; font-weight:700; color:var(--text-dark);}
+  .about-meta hr{border:none; border-top:1px solid var(--paper-line); margin:22px 0;}
+  .about-stats{display:grid; grid-template-columns:1fr 1fr; gap:20px;}
+  .about-stats .stat-num{font-family:'Unbounded',sans-serif; font-size:26px; font-weight:700;}
+  .about-stats .stat-label{font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--text-dark-muted); letter-spacing:0.5px;}
+
+  /* ---------- DIVISIONS ---------- */
+  .divisions{padding:140px 0; background:var(--ink); position:relative;}
+  .div-grid{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:24px;
+    position:relative;
+    perspective:1200px;
+  }
+  .div-card{
+    padding:44px 34px;
+    background:linear-gradient(155deg, var(--ink-soft), #100D0A);
+    border:1px solid var(--ink-line);
+    border-radius:14px;
+    position:relative;
+    transform-style:preserve-3d;
+    will-change:transform;
+    box-shadow:0 1px 0 rgba(255,255,255,0.04) inset, 0 20px 40px -20px rgba(0,0,0,0.6);
+    transition:box-shadow .3s ease, border-color .3s ease, transform .15s ease;
+    overflow:hidden;
+  }
+  .div-card::before{
+    content:''; position:absolute; top:0; left:0; right:0; height:3px;
+    background:linear-gradient(90deg, transparent, var(--card-color), transparent);
+    opacity:0.85;
+  }
+  .div-card::after{
+    content:''; position:absolute; inset:0; border-radius:14px;
+    background:radial-gradient(500px circle at var(--mx,50%) var(--my,0%), color-mix(in srgb, var(--card-color) 14%, transparent), transparent 60%);
+    opacity:0; transition:opacity .3s ease; pointer-events:none;
+  }
+  .div-card:hover{border-color:color-mix(in srgb, var(--card-color) 45%, var(--ink-line));}
+  .div-card:hover::after{opacity:1;}
+  .div-icon{
+    width:52px; height:52px; border-radius:12px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:22px; margin-bottom:26px;
+    background:linear-gradient(150deg, color-mix(in srgb, var(--card-color) 30%, transparent), color-mix(in srgb, var(--card-color) 8%, transparent));
+    border:1px solid color-mix(in srgb, var(--card-color) 45%, transparent);
+    box-shadow:0 1px 0 rgba(255,255,255,0.15) inset, 0 8px 16px -6px color-mix(in srgb, var(--card-color) 50%, transparent);
+    position:relative; z-index:1;
+  }
+  .div-card .div-tag{
+    font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:1px;
+    color:var(--card-color); margin-bottom:6px; display:block;
+  }
+  .div-card h3{font-family:'Unbounded',sans-serif; font-size:19px; font-weight:700; margin-bottom:16px;}
+  .div-card p{color:var(--text-muted); font-size:14.5px; margin-bottom:24px;}
+  .div-pills{display:flex; flex-wrap:wrap; gap:8px;}
+  .div-pills span{
+    font-family:'JetBrains Mono',monospace; font-size:11px;
+    border:1px solid var(--ink-line); padding:6px 10px; border-radius:20px;
+    color:var(--text-muted);
+  }
+
+  /* ---------- PROJECTS ---------- */
+  .projects{padding:140px 0; background:var(--ink-soft); position:relative;}
+  .proj-grid{display:grid; grid-template-columns:1fr 1fr; gap:28px; perspective:1200px;}
+  .proj-card{
+    border:1px solid var(--ink-line);
+    border-radius:14px;
+    padding:36px;
+    background:linear-gradient(155deg, var(--ink), #100D0A);
+    display:flex; flex-direction:column;
+    transform-style:preserve-3d;
+    will-change:transform;
+    box-shadow:0 1px 0 rgba(255,255,255,0.04) inset, 0 20px 40px -22px rgba(0,0,0,0.65);
+    transition:border-color .3s ease, box-shadow .3s ease, transform .15s ease;
+    position:relative; overflow:hidden;
+  }
+  .proj-card::after{
+    content:''; position:absolute; inset:0; border-radius:14px;
+    background:radial-gradient(460px circle at var(--mx,50%) var(--my,0%), rgba(255,106,26,0.12), transparent 60%);
+    opacity:0; transition:opacity .3s ease; pointer-events:none;
+  }
+  .proj-card:hover{border-color:var(--tech); box-shadow:0 1px 0 rgba(255,255,255,0.06) inset, 0 28px 50px -20px rgba(255,106,26,0.25);}
+  .proj-card:hover::after{opacity:1;}
+  .proj-top{display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:24px;}
+  .proj-icon{font-size:28px;}
+  .live-badge{
+    font-family:'JetBrains Mono',monospace; font-size:10.5px; letter-spacing:1px;
+    color:var(--founders); border:1px solid rgba(255,149,0,0.4);
+    background:rgba(255,149,0,0.1); padding:5px 10px; border-radius:20px;
+    display:flex; align-items:center; gap:6px;
+  }
+  .live-dot{width:6px; height:6px; border-radius:50%; background:var(--founders); animation:blink 1.6s ease-in-out infinite;}
+  @keyframes blink{0%,100%{opacity:1;} 50%{opacity:0.3;}}
+  .proj-card .proj-cat{
+    font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:1px;
+    color:var(--text-muted); margin-bottom:10px; display:block;
+  }
+  .proj-card h3{font-family:'Unbounded',sans-serif; font-size:18px; margin-bottom:14px;}
+  .proj-card p{color:var(--text-muted); font-size:14.5px; margin-bottom:22px; flex:1;}
+  .proj-pills{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:28px;}
+  .proj-pills span{
+    font-family:'JetBrains Mono',monospace; font-size:11px;
+    border:1px solid var(--ink-line); padding:5px 10px; border-radius:20px;
+    color:var(--text-muted);
+  }
+  .proj-link{
+    font-family:'JetBrains Mono',monospace; font-size:13px; font-weight:500;
+    color:var(--tech); display:inline-flex; align-items:center; gap:8px;
+    align-self:flex-start;
+  }
+  .proj-link svg{transition:transform .2s ease;}
+  .proj-card:hover .proj-link svg{transform:translate(3px,-3px);}
+
+  /* ---------- TEAM ---------- */
+  .team{padding:140px 0; background:var(--ink);}
+  .team-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:24px; perspective:1200px;}
+  .team-card{
+    border:1px solid var(--ink-line); border-radius:14px; padding:32px;
+    background:linear-gradient(155deg, var(--ink-soft), #100D0A);
+    transform-style:preserve-3d;
+    will-change:transform;
+    box-shadow:0 1px 0 rgba(255,255,255,0.04) inset, 0 20px 40px -22px rgba(0,0,0,0.65);
+    transition:border-color .3s ease, box-shadow .3s ease, transform .15s ease;
+    position:relative; overflow:hidden;
+  }
+  .team-card::after{
+    content:''; position:absolute; inset:0; border-radius:14px;
+    background:radial-gradient(460px circle at var(--mx,50%) var(--my,0%), rgba(255,201,51,0.1), transparent 60%);
+    opacity:0; transition:opacity .3s ease; pointer-events:none;
+  }
+  .team-card:hover{border-color:color-mix(in srgb, var(--tech) 40%, var(--ink-line));}
+  .team-card:hover::after{opacity:1;}
+  .badge{
+    width:56px; height:56px; border-radius:12px;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Unbounded',sans-serif; font-weight:700; font-size:15px;
+    margin-bottom:22px;
+    background:linear-gradient(150deg, color-mix(in srgb, var(--tech) 25%, transparent), color-mix(in srgb, var(--tech) 6%, transparent));
+    border:1px solid color-mix(in srgb, var(--tech) 40%, transparent);
+    box-shadow:0 1px 0 rgba(255,255,255,0.15) inset, 0 8px 16px -6px rgba(255,106,26,0.3);
+    color:var(--tech);
+    position:relative; z-index:1;
+  }
+  .team-card h3{font-family:'Unbounded',sans-serif; font-size:17px; margin-bottom:6px;}
+  .team-card .role{
+    font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--tech);
+    margin-bottom:16px; display:block;
+  }
+  .team-card p{color:var(--text-muted); font-size:14px;}
+
+  /* ---------- CONTACT ---------- */
+  .contact{padding:150px 0; background:var(--ink-soft); text-align:center; position:relative;}
+  .contact .wrap{max-width:720px;}
+  .contact .eyebrow-line{
+    font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:2px; color:var(--tech); display:block; margin-bottom:18px;
+  }
+  .contact h2{font-size:clamp(32px,5vw,52px); font-weight:700; margin-bottom:16px; letter-spacing:-0.5px;}
+  .contact h3{font-family:'IBM Plex Sans',sans-serif; font-weight:500; font-size:18px; color:var(--text-muted); margin-bottom:20px;}
+  .contact > .wrap > p{color:var(--text-muted); font-size:16px; margin-bottom:44px; max-width:520px; margin-left:auto; margin-right:auto;}
+  .email-cta{
+    font-family:'Unbounded',sans-serif; font-size:clamp(18px,2.6vw,28px); font-weight:700;
+    color:var(--tech); border-bottom:2px solid var(--tech); padding-bottom:6px;
+    display:inline-block; margin-bottom:24px; transition:opacity .2s ease;
+  }
+  .email-cta:hover{opacity:0.75;}
+  .response-note{font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text-muted);}
+
+  /* ---------- FOOTER ---------- */
+  footer{padding:40px 0; background:var(--ink); border-top:1px solid var(--ink-line);}
+  footer .wrap{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;}
+  footer .logo{font-size:14px;}
+  footer .foot-meta{font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text-muted);}
+
+  /* ---------- SCROLL REVEAL ---------- */
+  .reveal{
+    opacity:0; transform:translateY(28px);
+    transition:opacity .7s cubic-bezier(.2,.65,.3,1), transform .7s cubic-bezier(.2,.65,.3,1);
+  }
+  .reveal.in-view{opacity:1; transform:translateY(0);}
+  .reveal-stagger .reveal:nth-child(1){transition-delay:0s;}
+  .reveal-stagger .reveal:nth-child(2){transition-delay:.1s;}
+  .reveal-stagger .reveal:nth-child(3){transition-delay:.2s;}
+  @media (prefers-reduced-motion: reduce){
+    .reveal{opacity:1; transform:none;}
+  }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:900px){
+    .nav-links{
+      position:fixed; top:64px; right:0; left:0;
+      background:var(--ink); flex-direction:column; align-items:flex-start;
+      padding:24px 32px; gap:22px;
+      border-bottom:1px solid var(--ink-line);
+      transform:translateY(-150%); transition:transform .3s ease;
+    }
+    .nav-links.open{transform:translateY(0);}
+    .nav-toggle{
+      display:block; background:none; border:none; color:var(--text);
+      font-size:22px; cursor:pointer;
+    }
+    .about-grid{grid-template-columns:1fr;}
+    .div-grid{grid-template-columns:1fr;}
+    .proj-grid{grid-template-columns:1fr;}
+    .team-grid{grid-template-columns:1fr;}
+  }
+  @media (max-width:600px){
+    .wrap{padding:0 20px;}
+    .hero-ctas{flex-direction:column; align-items:stretch;}
+    footer .wrap{flex-direction:column; text-align:center;}
+  }
+</style>
+</head>
+<body>
+
+<header id="siteHeader">
+  <div class="wrap">
+    <nav>
+      <a href="#" class="logo"><span class="bolt">⚡</span>ZINOVA GROUP</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+      <div class="nav-links" id="navLinks">
+        <a href="#about">About</a>
+        <a href="#divisions">Divisions</a>
+        <a href="#projects">Projects</a>
+        <a href="#team">Team</a>
+        <a href="#contact">Contact</a>
+        <a href="mailto:zinovagroup@gmail.com" class="btn-touch">Get In Touch</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="grid-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="wrap">
+    <span class="eyebrow">⚡ Technology &amp; Digital Solutions — Est. 30 Nov 2025</span>
+    <div class="tagline">THINK. BUILD. CONQUER.</div>
+    <h1 class="display">BUILD WHAT<br><span class="accent">MATTERS</span></h1>
+    <p class="lead">We turn your ideas into real digital products — from concept to launch. Software, apps, design, and startup support under one roof.</p>
+    <div class="hero-ctas">
+      <a href="#divisions" class="btn-primary">Explore Divisions →</a>
+      <a href="#contact" class="btn-secondary">Start a Project</a>
+    </div>
+    <div class="pulse-wrap">
+      <svg class="pulse-svg" viewBox="0 0 720 60" preserveAspectRatio="none">
+        <path class="pulse-path" d="M0,30 L140,30 L165,30 L180,8 L200,52 L220,18 L238,30 L260,30 L580,30 L600,30 L618,10 L636,50 L654,20 L672,30 L720,30" />
+      </svg>
+      <div class="scroll-cue"><span class="line"></span>SCROLL</div>
+    </div>
+  </div>
+</section>
+
+<section class="about light" id="about">
+  <div class="wrap">
+    <div class="about-grid reveal-stagger">
+      <div class="reveal">
+        <span class="eyebrow-line">About Us</span>
+        <h2 class="display">We Build Digital Products That Drive Growth</h2>
+      </div>
+      <div class="about-copy reveal">
+        <p>ZINOVA GROUP is a technology and digital solutions company focused on helping individuals, startups, and businesses turn their ideas into real products.</p>
+        <p>We provide end-to-end services including software development, web and mobile application development, UI/UX design, product design, and digital system solutions.</p>
+        <p>Our mission is to solve real-world problems through innovative technology and creative design. At ZINOVA GROUP, we believe great ideas deserve the right technology and support to grow.</p>
+        <div class="about-meta">
+          <span class="mono">📅 ESTABLISHED</span>
+          <span class="est-date">30 November 2025</span>
+          <hr>
+          <div class="about-stats">
+            <div>
+              <div class="stat-num">3</div>
+              <div class="stat-label">DIVISIONS</div>
+            </div>
+            <div>
+              <div class="stat-num">2</div>
+              <div class="stat-label">PRODUCTS SHIPPED</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="divisions" id="divisions">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow-line">Our Divisions</span>
+      <h2 class="display">Three Pillars of Innovation</h2>
+      <p>Every division serves a unique need — together, they cover everything your digital journey demands.</p>
+    </div>
+    <div class="div-grid reveal-stagger">
+      <div class="div-card reveal tilt" style="--card-color:var(--tech)">
+        <div class="div-icon">⚡</div>
+        <span class="div-tag">ZINOVA TECH</span>
+        <h3>Engineering &amp; Development</h3>
+        <p>We build powerful, scalable digital products — from mobile apps to web platforms and immersive game experiences. Our engineers craft clean, high-performance code that brings your vision to life.</p>
+        <div class="div-pills">
+          <span>App Development</span><span>Web Development</span><span>Game Development</span><span>Software Solutions</span>
+        </div>
+      </div>
+      <div class="div-card reveal tilt" style="--card-color:var(--studio)">
+        <div class="div-icon">🎨</div>
+        <span class="div-tag">ZINOVA STUDIO</span>
+        <h3>Design &amp; Brand Identity</h3>
+        <p>We craft beautiful, meaningful digital experiences. From intuitive UI/UX flows to bold brand identities and strategic marketing — we make your product look and feel extraordinary.</p>
+        <div class="div-pills">
+          <span>UI/UX Design</span><span>Branding</span><span>Marketing</span><span>Product Design</span>
+        </div>
+      </div>
+      <div class="div-card reveal tilt" style="--card-color:var(--founders)">
+        <div class="div-icon">🚀</div>
+        <span class="div-tag">ZINOVA FOUNDERS</span>
+        <h3>Startup &amp; Business Support</h3>
+        <p>We partner with founders and businesses to navigate growth. From ideation to execution — business strategy, tech architecture, software selection, and go-to-market planning, we help you build right from day one.</p>
+        <div class="div-pills">
+          <span>Startup Support</span><span>Business Strategy</span><span>Tech Consulting</span><span>Growth Marketing</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="projects" id="projects">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow-line">Our Work</span>
+      <h2 class="display">Projects We've Built</h2>
+      <p>Real solutions, shipped. From concept to deployment — here's what we've created for the world.</p>
+    </div>
+    <div class="proj-grid reveal-stagger">
+      <div class="proj-card reveal tilt">
+        <div class="proj-top">
+          <div class="proj-icon">🏨</div>
+          <span class="live-badge"><span class="live-dot"></span>LIVE</span>
+        </div>
+        <span class="proj-cat">HOSTEL MANAGEMENT</span>
+        <h3>Room &amp; Resident Management System</h3>
+        <p>A comprehensive digital platform built to streamline hostel operations — from room allocation and resident tracking to fee management and admin controls. Designed to eliminate paperwork and bring clarity to day-to-day hostel administration.</p>
+        <div class="proj-pills">
+          <span>Web App</span><span>Admin Dashboard</span><span>Room Booking</span><span>Fee Tracking</span>
+        </div>
+        <a href="https://hostelmanagement-zinovadevelop.vercel.app" class="proj-link" target="_blank" rel="noopener">
+          Visit Project
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+        </a>
+      </div>
+      <div class="proj-card reveal tilt">
+        <div class="proj-top">
+          <div class="proj-icon">🏪</div>
+          <span class="live-badge"><span class="live-dot"></span>LIVE</span>
+        </div>
+        <span class="proj-cat">BUSINESS FLOW SUITE</span>
+        <h3>Manage invoices, leads, and stock — without the chaos.</h3>
+        <p>Automate your business operations — from invoices to inventory — while staying in sync with Tally Solutions. Reduce manual work, avoid errors, and get clear insights without complexity.</p>
+        <div class="proj-pills">
+          <span>Web App</span><span>Dashboard</span><span>Invoice CRM</span><span>Tally</span>
+        </div>
+        <a href="https://businessflowsuite-zinovadevelop.vercel.app" class="proj-link" target="_blank" rel="noopener">
+          Visit Project
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="team" id="team">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow-line">The People Behind It</span>
+      <h2 class="display">Meet Our Founding Team</h2>
+      <p>Three visionaries who came together on 30 November 2025 to build technology that empowers people and organizations.</p>
+    </div>
+    <div class="team-grid reveal-stagger">
+      <div class="team-card reveal tilt">
+        <div class="badge">CEO</div>
+        <h3>Varun. S</h3>
+        <span class="role">Founder &amp; CEO</span>
+        <p>Visionary leader driving ZINOVA's mission. The driving force behind ZINOVA GROUP's inception and overall strategic direction.</p>
+      </div>
+      <div class="team-card reveal tilt">
+        <div class="badge">CPO</div>
+        <h3>Vishnu Vardhan. A.S</h3>
+        <span class="role">Co-Founder &amp; CPO</span>
+        <p>Product strategist with a sharp eye for user needs and market fit. Champions the product vision across all three ZINOVA divisions.</p>
+      </div>
+      <div class="team-card reveal tilt">
+        <div class="badge">CTO</div>
+        <h3>Amritanand. D</h3>
+        <span class="role">Co-Founder &amp; CTO</span>
+        <p>Tech architect behind ZINOVA's engineering backbone — building scalable systems and leading the technical vision from the ground up.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="wrap">
+    <span class="eyebrow-line">Get In Touch</span>
+    <h2 class="display">Let's Build Something Great Together</h2>
+    <h3>Have an idea? We'd love to hear it.</h3>
+    <p>Whether you're a startup with a vision, a business looking to digitize, or an individual with a concept — reach out. We'll help you figure out the next step and build it right.</p>
+    <a href="mailto:zinovagroup@gmail.com" class="email-cta">✉ zinovagroup@gmail.com</a>
+    <div class="response-note">We typically respond within 24 hours.</div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <a href="#" class="logo"><span class="bolt">⚡</span>ZINOVA GROUP</a>
+    <span class="foot-meta">Est. 30 November 2025 · © 2025 ZINOVA GROUP. All rights reserved.</span>
+  </div>
+</footer>
+
+<script>
+  const header = document.getElementById('siteHeader');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', () => {
+    const isOpen = navLinks.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', isOpen);
+  });
+  navLinks.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  const revealEls = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+    revealEls.forEach(el => io.observe(el));
+  } else {
+    revealEls.forEach(el => el.classList.add('in-view'));
+  }
+
+  /* 3D tilt on cards */
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!prefersReducedMotion && window.matchMedia('(hover: hover)').matches) {
+    document.querySelectorAll('.tilt').forEach(card => {
+      let rafId = null;
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const px = (e.clientX - rect.left) / rect.width;
+        const py = (e.clientY - rect.top) / rect.height;
+        if (rafId) cancelAnimationFrame(rafId);
+        rafId = requestAnimationFrame(() => {
+          const rotateY = (px - 0.5) * 10;
+          const rotateX = (0.5 - py) * 10;
+          card.style.transform = `perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-6px) translateZ(10px)`;
+          card.style.setProperty('--mx', `${px * 100}%`);
+          card.style.setProperty('--my', `${py * 100}%`);
+        });
+      });
+      card.addEventListener('mouseleave', () => {
+        if (rafId) cancelAnimationFrame(rafId);
+        card.style.transform = 'perspective(1200px) rotateX(0) rotateY(0) translateY(0) translateZ(0)';
+      });
+    });
+  }
+</script>
+
+</body>
+</html>
